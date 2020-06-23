@@ -1,33 +1,36 @@
-const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/teste', {useNewUrlParser: true, useUnifiedTopology: true});
+//Aprendendo Mongoose
 
-const db = mongoose.connection.then(() =>{
-    console.log("Mongo conectado com sucesso !");
-}).catch((err) =>{
-    console.log("Erro ao conectar ao MongoDB:" + err);
+
+const mongoose = require('mongoose')
+const express = require('express')
+const bodyParser = require('body-parser')
+const { json } = require('body-parser')
+
+bodyParser.urlencoded(json)
+
+const app = express()
+
+app.use(bodyParser.urlencoded({ extended:true}));
+
+mongoose.connect("mongodb://localhost/mongodb", {useNewUrlParser:true, useUnifiedTopology:true})
+
+var schema = new mongoose.Schema({ name: 'string', size: 'string' });
+var Tank = mongoose.model('Tank', schema);
+
+var small = new Tank({ size: 'tiny' });
+small.save(function (err) {
+  if (err) return handleError(err);
+  // saved!
 });
 
-const usuarioSchema = new mongoose.Schema({
-    nome : { type: String, require: true},
-    sobrenome : { type: String, require: true},
-    senha: { type: String, require: true},
-    email : { type: String, require: true},
-    dataCadastro : { type: Date, default: Date.now}
-});
-
-const Usuario = mongoose.model('Usuario',usuarioSchema)
-
-const usuario = new Usuario({
-    nome: "Philipe",
-    sobrenome: "Herodek Neto",
-    senha: "Herodek10",
-    email: "herodek_10@hotmail.com",
+app.get('/blog', (req,res)  =>{
+    mongoose.model('Tank').find((err,Tank) =>{
+        res.send(Tank);
+    })
 })
 
-const usuario2 = new Usuario({
-    nome: "Felipe",
-    sobrenome : "Neto",
-    senha : "Neto10",
-    email: "neto10@hotmail.com"
+const porta = 8081
+app.listen(porta, () =>{
+    console.log("Node JS rodando na porta: "+ porta)
 })
