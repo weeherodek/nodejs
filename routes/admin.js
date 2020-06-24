@@ -29,12 +29,16 @@ router.post('/categoria/nova', (req,res) =>{
         nome: req.body.nome,
         slug: req.body.slug
     }
-    new Categoria(novaCategoria).save().then(() =>{
-        console.log("Categoria criada com sucesso!")
-    }).catch((err) =>{
-        console.log("Erro ao criar categoria" + err)
+    new Categoria(novaCategoria).save( (err) =>{
+        if(err) return res.send(err.message)
+        else res.send(`Slug ${req.body.nome} cadastrado com sucesso !`);
     })
+})
 
+router.get('/categoria/teste',(req,res) =>{
+    mongoose.model('categoria').find((err,Categoria) =>{
+        res.send(Categoria);
+    })
 })
 
 module.exports = router;
