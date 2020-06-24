@@ -16,7 +16,12 @@ router.get('/posts', (req,res) =>{
 })
 
 router.get('/categoria', (req,res) =>{
-    res.render("admin/categoria")
+    Categoria.find().sort({data:'desc'}).then((categoria)=>{
+        res.render("admin/categoria",{Categoria:categoria.map(categoria=>categoria.toJSON())})
+    }).catch((err)=>{
+        req.flash("error_msg","Houve um erro ao carregar as categorias: "+ err)
+        res.redirect("/admin")
+    })
 })
 
 router.get('/categoria/add', (req,res) =>{
@@ -25,14 +30,33 @@ router.get('/categoria/add', (req,res) =>{
 
 
 router.post('/categoria/nova', (req,res) =>{
-    const novaCategoria = {
-        nome: req.body.nome,
-        slug: req.body.slug
+
+    var erros = []
+
+    //Validação Formulário
+    if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null)
+        erros.push({texto: "Nome Inválido !"})
+    if(!req.body.slug || typeof req.body.slug == undefined || req.body.slug == null)
+        erros.push({texto: "Slug Inválido !"})
+    if(req.body.nome.length < 4)
+        erros.push({texto: "Nome da categoria muito pequeno"})
+    else{
+        const novaCategoria = {
+            nome: req.body.nome,
+            slug: req.body.slug
+        }
+        new Categoria(novaCategoria).save( (err) =>{
+            if(err) {
+                req.flash("error_msg","Erro ao cadastrar categoria :" + req.body.nome) 
+                res.render("admin/addcategoria", {erros: erros})
+        }
+            else{
+                req.flash("success_msg",`Categoria ${req.body.nome} criada com sucesso !`)
+                res.redirect("/admin/categoria")
+            }
+        })
     }
-    new Categoria(novaCategoria).save( (err) =>{
-        if(err) return res.send(err.message)
-        else res.send(`Slug ${req.body.nome} cadastrado com sucesso !`);
-    })
+    
 })
 
 router.get('/categoria/teste',(req,res) =>{

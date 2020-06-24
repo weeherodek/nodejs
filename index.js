@@ -4,6 +4,9 @@ const express = require('express')
 const handlebars = require('express-handlebars')
 const bodyParser = require('body-parser')
 const path = require('path')
+const session = require('express-session')
+const flash = require('connect-flash')
+
 
 const app = express()
 
@@ -13,6 +16,22 @@ const { urlencoded } = require('body-parser')
 
 
 //configurações
+    //Sessão
+    app.use(session({
+        secret:"cursodenode",
+        resave:true,
+        saveUninitialized:true
+    }))
+
+    app.use(flash())
+
+    //Middleware
+    app.use((req,res,next) =>{
+        res.locals.success_msg = req.flash("success_msg")
+        res.locals.error_msg = req.flash("error_msg")
+        next()
+    })
+
     //Body Parser
     app.use(bodyParser.urlencoded({extended:true}))
     app.use(bodyParser.json())
@@ -25,7 +44,7 @@ const { urlencoded } = require('body-parser')
     //mongooose
     
     mongoose.Promise = global.Promise
-    mongoose.connect('mongodb://localhost:27017/testedb', {useUnifiedTopology:true}, urlencoded).then(() =>{
+    mongoose.connect('mongodb://localhost:27017/testedb', {useNewUrlParser:true, useUnifiedTopology:true}, urlencoded).then(() =>{
         console.log("conectado ao banco de dados Mongo !")
 
     }).catch((err) =>{
