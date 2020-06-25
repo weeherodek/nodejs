@@ -44,7 +44,7 @@ const { urlencoded } = require('body-parser')
     //mongooose
     
     mongoose.Promise = global.Promise
-    mongoose.connect('mongodb://localhost:27017/testedb', {useNewUrlParser:true, useUnifiedTopology:true}, urlencoded).then(() =>{
+    mongoose.connect('mongodb://localhost/testedb', {useNewUrlParser:true, useUnifiedTopology:true}, urlencoded).then(() =>{
         console.log("conectado ao banco de dados Mongo !")
 
     }).catch((err) =>{

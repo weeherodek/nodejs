@@ -1,14 +1,35 @@
 <h2>Lista de categoria :</h2> 
 <hr>
-<a href="/admin/categoria/add"><button class="btn btn-success">Adicionar categoria</button></a>
+<a href="/admin/categoria/add"><button class="btn btn-success mb-4">Adicionar categoria</button></a>
+<div>
+    <table class="table table-bordered">
+    <thead class=" thead-dark">
+    <tr>
+        <th scope="col">Nome</th>
+        <th scope="col">Slug</th>
+        <th scope="col">Data de criação</th>
+        <th scope="col">Editar</th>
+        <th scope="col">Excluir</th>
+    </tr>
+  </thead>
 
 {{#each Categoria}}
-    <div class="card  mt-2">
-        <h4>{{nome}}</h4>
-    <div class="card-body">
-        <small>Slug: {{slug}}</small><br>
-        <small>Data de Criação: {{data}}</small>
-    </div>
-    </div>
+    <tbody>
+    <tr>
+        <td>{{nome}}</td>
+        <td>{{slug}}</td>
+        <td>{{data}}</td>
+        <td><a href="/admin/categoria/edit/{{_id}}"><button class="btn btn-info btn-sm">Editar</button></a></td>
+        <td><form method="POST" action="/admin/categoria/del/{{_id}}">
+            <input type="hidden" name="id" value="{{_id}}">
+            <input type="hidden" name="nome" value="{{nome}}">
+            <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+        </form></td>
+    </tr>
+    </tbody>
 
 {{/each}}
+    </table>
+
+
+</div>
