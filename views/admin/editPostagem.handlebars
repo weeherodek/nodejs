@@ -1,10 +1,10 @@
 
-<h2>Adicionar postagem</h2>
+<h2>Editar postagem</h2>
 
 <form action="/admin/postagem/edit" method="POST">
     <label for="titulo">Titulo da postagem</label>
 
-    <input type="hidden" name="id" value="{{_id}}">
+    <input type="hidden" name="id" value="{{postagem._id}}">
 
     <input type="text" id="titulo" name="titulo" placeholder="Titulo da postagem" class="form-control" value="{{postagem.titulo}}"required>
     
@@ -15,19 +15,19 @@
         <input type="text" id="descricao" name="descricao" placeholder="Descrição da postagem" class="form-control" value="{{postagem.descricao}}">
 
     <label for="conteudo">Conteúdo</label>
-        <textarea name="conteudo" id="conteudo" placeholder="Digite o conteúdo da postagem..." class="form-control" value="{{postagem.conteudo}}" required></textarea>
+        <textarea name="conteudo" id="conteudo" placeholder="Digite o conteúdo da postagem..." class="form-control" required>{{postagem.conteudo}}</textarea>
 
     <label for="autor">Autor</label>
         <input type="text" name="autor" id="autor" placeholder="Autor da postagem" class="form-control" value="{{postagem.autor}}" required>
 
-    <label for="categoria">Categoria:</label>
+    <label for="categoria">Categoria</label>
         <select name="categoria" id="categoria" class="custom-select">
             {{#each categoria}}
-            <option value="{{categoria._id}}">{{categoria.nome}}</option>
+            <option value="{{_id}}">{{nome}}</option>
             {{else}}
             <option value="0">Nenhuma categoria registrada</option>
             {{/each}}
         </select>
-    <button type = "submit" class="btn btn-success mt-2">Cadastrar postagem</button>
+    <button type = "submit" class="btn btn-success mt-2">Editar postagem</button>
 
 </form>

@@ -150,11 +150,15 @@ router.post("/postagem/nova",(req,res)=>{
 
 
 router.get("/postagem/edit/:id",(req,res) =>{
-    Postagem.findOne({_id:req.params.id}).populate("categoria").lean().then((postagem)=>{
-            res.render("admin/editPostagem", {postagem:postagem , categoria:categoria})
-        }).catch((err)=>{
-            req.flash("error_msg","Houve um erro interno ao editar a postagem !")
-        })
+    Postagem.findOne({_id:req.params.id}).lean().then((postagem)=>{
+        Categoria.find().lean().then((categoria)=>{
+            res.render("admin/editPostagem", {categoria:categoria, postagem:postagem})
+        }).catch(()=>{
+            req.flash("error_msg","Erro ao acessar post, tente novamente !")
+            res.redirect("/admin/postagem")
+        })    
+    })
+        
 })
 
 router.post("/postagem/edit", (req,res)=>{
@@ -166,7 +170,20 @@ router.post("/postagem/edit", (req,res)=>{
         conteudo: req.body.conteudo,
         auto: req.body.autor
     }   
-    Postagem.findOneAndUpdate({_id:req.body.id},postagemAtt)
+    Postagem.findOneAndUpdate({_id:req.body.id},postagemAtt,{new:true}).then(()=>{
+        req.flash("success_msg","Postagem editada com sucesso !")
+        res.redirect("/admin/postagem")
+    })
+})
+
+router.post("/postagem/del/:id", (req,res) =>{
+    Postagem.deleteOne({_id:req.params.id}).then(()=>{
+        req.flash("success_msg","Postagem excluída com sucesso !")
+        res.redirect("/admin/postagem")
+    }).catch((err)=>{
+        req.flash("error_msg","Erro ao excluir arquivo, tente novamente !")
+        res.redirect("/admin/postagem")
+    })
 })
 
 
