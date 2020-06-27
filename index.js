@@ -7,12 +7,14 @@ const path = require('path')
 const session = require('express-session')
 const flash = require('connect-flash')
 
-
 const app = express()
+
+require("./models/Postagem")
+
+const Postagem = mongoose.model("postagem")
 
 const admin = require('./routes/admin')
 const { urlencoded } = require('body-parser')
-//const { executionAsyncResource } = require('async_hooks')
 
 
 //configurações
@@ -58,11 +60,14 @@ const { urlencoded } = require('body-parser')
 //rotas
     //home
     app.get('/', (req,res) => {
-        res.send("Página principal")
+        Postagem.find().populate("categoria").sort({data:"desc"}).lean().then((postagem)=>{
+            res.render("index", {postagem:postagem}) 
+        })      
+        
     })
 
-    app.get("/teste",(req,res)=>{
-        res.send("Teste !")   
+    app.get("/404",(req,res)=>{
+        res.send("Erro:404 ao acessar a tela, tente novamente !")
     })
 
     app.use('/admin',admin)
@@ -74,15 +79,3 @@ const port = 8081
 app.listen(port, () =>{
     console.log("Node JS rodando na porta :"+ port)
 })
-
-
-//Testando banco de dados Mongo
-var schema = new mongoose.Schema({ name: 'string', size: 'string' });
-
-var Tank = mongoose.model('Tank', schema);
-
-var small = new Tank({ name: "kitty", size: 'small' });
-small.save(function (err) {
-  if (err) return handleError(err);
-  // saved!
-});
