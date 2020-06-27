@@ -61,6 +61,9 @@ const { urlencoded } = require('body-parser')
         res.send("Página principal")
     })
 
+    app.get("/teste",(req,res)=>{
+        res.send("Teste !")   
+    })
 
     app.use('/admin',admin)
 

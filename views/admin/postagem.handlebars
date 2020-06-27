@@ -1,0 +1,42 @@
+<h2>Lista de Postagem :</h2> 
+<hr>
+<a href="/admin/postagem/add"><button class="btn btn-success mb-4">Adicionar postagem</button></a>
+
+<div>
+    <table class="table table-bordered">
+    <thead class=" thead-dark">
+    <tr>
+        <th scope="col">Titulo</th>
+        <th scope="col">Slug</th>
+        <th scope="col">Categoria</th>
+        <th scope="col">Autor</th>
+        <th scope="col">Editar</th>
+        <th scope="col">Excluir</th>
+    </tr>
+  </thead>
+
+{{#each Postagem}}
+    <tbody>
+    <tr>
+        <td>{{titulo}}</td>
+        <td>{{slug}}</td>
+        {{#if categoria.nome}}
+        <td>{{categoria.nome}}</td>
+        {{else}}
+        <td>Categoria deletada</td>
+        {{/if}}
+        <td>{{autor}}</td>
+        <td><a href="/admin/postagem/edit/{{_id}}"><button class="btn btn-info btn-sm">Editar</button></a></td>
+        <td><form method="POST" action="/admin/postagem/del/{{_id}}">
+            <input type="hidden" name="id" value="{{_id}}">
+            <input type="hidden" name="nome" value="{{nome}}">
+            <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+        </form></td>
+    </tr>
+    </tbody>
+
+{{/each}}
+    </table>
+
+
+</div>

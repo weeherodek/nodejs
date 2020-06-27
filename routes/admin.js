@@ -46,8 +46,8 @@ router.post('/categoria/nova', (req,res) =>{
         }
         new Categoria(novaCategoria).save( (err) =>{
             if(err) {
-                req.flash("error_msg","Erro ao cadastrar categoria :" + req.body.nome) 
-                res.render("admin/addCategoria", {erros: erros})
+                req.flash("error_msg","Erro ao cadastrar categoria :" + req.body.nome)
+                res.render("/admin/addCategoria", {erros: erros})
         }
             else{
                 req.flash("success_msg",`Categoria ${req.body.nome} criada com sucesso !`)
@@ -103,7 +103,7 @@ router.post("/categoria/del/:id", (req,res)=>{
 })
 
 router.get("/postagem/", (req,res)=>{
-    Postagem.find().sort({data:'desc'}).then((postagem)=>{
+    Postagem.find().populate("categoria").sort({data:"desc"}).then((postagem)=>{
         res.render("admin/postagem",{Postagem:postagem.map(postagem=>postagem.toJSON())})
     }).catch((err)=>{
         req.flash("error_msg","Houve um erro ao carregar as postagens: "+ err)
@@ -130,24 +130,44 @@ router.post("/postagem/nova",(req,res)=>{
         const novaPostagem = {
             titulo : req.body.titulo,
             slug : req.body.slug,
-            categoria : req.body.slug,
+            categoria : req.body.categoria,
             descricao : req.body.descricao,
             conteudo : req.body.conteudo,
             autor : req.body.autor
         }
-       
     new Postagem(novaPostagem).save((err) =>{
         if(err){
-            req.flash("error_msg",`Erro ao cadastrar postagem ${req.body.titulo}, erro: ${err}`)
-            res.redirect("/admin/postagem")
+            req.flash("error_msg",`Erro ao cadastrar postagem, erro: ${err}`)
+            res.redirect("/admin/postagem/nova", {erros: erros})
         }
         else{
             req.flash("success_msg",`Postagem cadastrada com sucesso !`)
             res.redirect("/admin/postagem")
         }
     })
-
     
 })
+
+
+router.get("/postagem/edit/:id",(req,res) =>{
+    Postagem.findOne({_id:req.params.id}).populate("categoria").lean().then((postagem)=>{
+            res.render("admin/editPostagem", {postagem:postagem , categoria:categoria})
+        }).catch((err)=>{
+            req.flash("error_msg","Houve um erro interno ao editar a postagem !")
+        })
+})
+
+router.post("/postagem/edit", (req,res)=>{
+    const postagemAtt = {        
+        titulo: req.body.titulo,
+        slug: req.body.slug,
+        categoria: req.body.categoria,
+        descricao: req.body.descricao,
+        conteudo: req.body.conteudo,
+        auto: req.body.autor
+    }   
+    Postagem.findOneAndUpdate({_id:req.body.id},postagemAtt)
+})
+
 
 module.exports = router;
