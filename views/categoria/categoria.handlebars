@@ -1,0 +1,18 @@
+<div class="card-deck">
+{{#each postagem}}
+    teste
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">{{titulo}}</h5>
+                <p class="card-text">{{conteudo}}</p>
+                <p class="card-text"><small class="text-muted">{{descricao}}</small></p>
+                <hr>
+                <small>Categoria: {{categoria.nome}}</small>
+                <small>Data de publicação: {{data_publicacao}}</small><br>
+                <a href="/postagem/{{_id}}"><button class="btn btn-info">Leia Mais</button></a>
+            </div>
+        </div>
+{{else}}
+    <h3>Nenhuma postagem recente...</h3>
+{{/each}}
+</div>

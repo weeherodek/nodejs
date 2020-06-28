@@ -15,4 +15,8 @@ const Postagem = new Schema({
     autor : {type: String, required:true}
 })
 
+
 mongoose.model("postagem",Postagem)
+
+
+

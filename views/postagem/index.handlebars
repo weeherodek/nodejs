@@ -1,0 +1,13 @@
+<h1>Postagens:</h1>
+{{#each postagem}}
+    <div class="card mt-4">
+        <div class="card-box">
+            <h3>Titulo:{{titulo}}</h3>
+            <h5>Data de Publicação: {{#formatDate}}{{data_publicacao}}{{/formatDate}}</h5>
+            <small>Autor: {{autor}}</small>
+            <a href="./{{_id}}"><button class="btn btn-info">Leia Mais</button></a>
+        </div>
+    </div>
+{{else}}
+
+{{/each}}
