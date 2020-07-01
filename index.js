@@ -12,14 +12,20 @@ const app = express()
 
 require("./models/Postagem")
 require("./models/Categoria")
+require("./models/Usuario")
 
 
 const Postagem = mongoose.model("postagem")
 const Categoria = mongoose.model("categoria")
+const Usuario = mongoose.model("usuario")
 
 
 const admin = require('./routes/admin')
+const usuario = require('./routes/usuario')
+
+
 const { urlencoded } = require('body-parser')
+const { allowedNodeEnvironmentFlags } = require('process')
 
 
 //configurações
@@ -50,8 +56,16 @@ const { urlencoded } = require('body-parser')
         helpers:{
             formatDate:(date)=>{
                 return moment(date).format("DD/MM/YYYY")
+            },
+            formatDateHour:(date)=>{
+                return moment(date).format("DD/MM/yyyy HH:mm:ss")
             }
-        }}))
+            },
+
+        allowedProtoMethods:{
+            trim:true,
+        }
+        }))
     app.set('view engine', 'handlebars')
 
     //mongooose
@@ -83,6 +97,7 @@ const { urlencoded } = require('body-parser')
     })
 
     app.use('/admin',admin)
+    app.use('/usuario',usuario)
 
     app.get("/postagem/:id", (req,res)=>{
         Postagem.findOne({_id:req.params.id}).lean().then((postagem)=>{
@@ -103,11 +118,10 @@ const { urlencoded } = require('body-parser')
     })
 
     app.get("/categoria/:slug", (req,res)=>{
-        Categoria.findOne({slug:req.params.slug}).then((categoria)=>{
+        Categoria.findOne({slug:req.params.slug}).lean().then((categoria)=>{
             if(categoria){
-                Postagem.find({categoria:categoria._id}).then((postagem)=>{
-                    console.log(postagem)
-                    res.render("postagem/postagem",{postagem:postagem,categoria:categoria})
+                Postagem.find({categoria:categoria._id}).lean().then((postagem)=>{
+                    res.render("categoria/postCategoria",{postagem:postagem,categoria:categoria})
                 })
             }
             else{
@@ -128,9 +142,21 @@ const { urlencoded } = require('body-parser')
             res.redirect("/")
         })
     })
+
+    app.get("/usuario", (req,res)=>{
+        Usuario.find().lean().then((usuario)=>{
+            res.render("usuario/index",{usuario:usuario})
+        }).catch((err)=>{
+            req.flash("error_msg","Erro interno, tente novamente")
+            res.redirect("/")
+        })
+    })
+
+
+
 //Outros
 
 const port = 8081
 app.listen(port, () =>{
-    console.log("Node JS rodando na porta :"+ port)
+    console.log("Node JS rodando na porta: "+ port)
 })

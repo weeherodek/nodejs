@@ -2,10 +2,11 @@
 {{#each postagem}}
     <div class="card mt-4">
         <div class="card-box">
-            <h3>Titulo:{{titulo}}</h3>
-            <h5>Data de Publicação: {{#formatDate}}{{data_publicacao}}{{/formatDate}}</h5>
-            <small>Autor: {{autor}}</small>
-            <a href="./{{_id}}"><button class="btn btn-info">Leia Mais</button></a>
+            <h3>Titulo: {{titulo}}</h3>
+            <h4>Categoria: {{slug}}</h4>
+            <small>Data de Publicação: {{#formatDate}}{{data_publicacao}}{{/formatDate}}</small><br>
+            <small>Autor: {{autor}}</small><br>
+            <a href="./{{_id}}"><button class="btn btn-info m-2">Leia Mais</button></a>
         </div>
     </div>
 {{else}}

@@ -1,9 +1,11 @@
-{{#each postagem}}
-<h1>{{titulo}}</h1>
-<small>Autor: {{autor}}</small><br>
-<small>Data de Publicação: {{data_publicacao}}</small>
+<h1>{{postagem.titulo}}</h1>
+<small>{{postagem.descricao}}</small><br>
+<small>Autor: {{postagem.autor}}</small><br>
+<small>Data de Publicação: {{#formatDate}}{{postagem.data_publicacao}}{{/formatDate}}</small>
 <hr>
-<h5>{{descricao}}</h5>
-<h2>{{conteudo}}</h2>
 
-{{/each}}
+<div class="card">
+    <div class="card-box">
+        <center><h2>{{postagem.conteudo}}</h2></center>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+
+<a href="/usuario/cadastro"><button class="btn btn-info">Cadastre-se</button></a>
+
+{{#each usuario}}
+    <h1>{{nome}} {{sobrenome}}</h1>
+    <h2>{{email}}</h2>
+    <h2>{{usuario}}</h2>
+    <h4>É admin: {{admin}}</h4>
+    <hr>
+{{else}}
+    <h1>Nenhum usuário cadastrado...</h1>
+    <a href="/usuario/cadastro"><button class="btn btn-info">Cadastre-se</button></a>
+{{/each}}

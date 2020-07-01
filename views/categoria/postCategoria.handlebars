@@ -1,0 +1,21 @@
+<h1>{{categoria.nome}}</h1>
+<small>Slug: {{categoria.slug}}</small>
+<hr>
+
+
+{{#each postagem}}
+    <div class="card mt-4">
+        <div class="card-box">
+        <h3>{{titulo}}</h3>
+        <small>Autor: {{autor}}</small><br>
+        <small>Data Publicação: {{#formatDate}}{{data_publicacao}}{{/formatDate}}</small>
+            <h5>{{conteudo}}</h5>
+        <a href="/postagem/{{_id}}"><button class="btn btn-info mb-2">Leia mais...</button><br></a>
+        </div>
+    </div>
+    
+    {{else}}
+
+    <h3>Não existem posts com essa categoria</h3>
+
+{{/each}}
