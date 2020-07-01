@@ -13,7 +13,9 @@
     "express-session": "^1.17.1",
     "moment": "^2.27.0",
     "mongoose": "^5.9.19",
-    "mongoose-date-format": "^1.2.0"
+    "mongoose-date-format": "^1.2.0",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {},
   "scripts": {

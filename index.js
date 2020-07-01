@@ -7,9 +7,11 @@ const path = require('path')
 const session = require('express-session')
 const flash = require('connect-flash')
 const moment = require('moment')
+const passport = require('passport')
 
 const app = express()
 
+require("./config/auth")(passport)
 require("./models/Postagem")
 require("./models/Categoria")
 require("./models/Usuario")
@@ -36,12 +38,18 @@ const { allowedNodeEnvironmentFlags } = require('process')
         saveUninitialized:true
     }))
 
+    app.use(passport.initialize())
+
+    app.use(passport.session())
+
     app.use(flash())
 
     //Middleware
     app.use((req,res,next) =>{
         res.locals.success_msg = req.flash("success_msg")
         res.locals.error_msg = req.flash("error_msg")
+        res.locals.error = req.flash("error")
+        res.locals.user = req.user || null
         next()
     })
 
@@ -156,7 +164,7 @@ const { allowedNodeEnvironmentFlags } = require('process')
 
 //Outros
 
-const port = 8081
+const port = process.env.PORT || 8081
 app.listen(port, () =>{
     console.log("Node JS rodando na porta: "+ port)
 })
