@@ -4,7 +4,7 @@ Blogapp Node
 
 ### Pre-requisitos
 >Ter Node.JS instalado
- [Node.JS] (https://nodejs.org/en/)
+[Node.JS] (https://nodejs.org/en/)
 >Ter um navegador instalado.
 
 ### Iniciar aplicação
