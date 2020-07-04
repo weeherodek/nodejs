@@ -3,7 +3,8 @@ Blogapp Node
 ##### Blog feito para aprendizado em Node.JS
 
 ### Pre-requisitos
->Ter Node.JS instalado [Node.JS] (https://nodejs.org/en/)
+>Ter Node.JS instalado
+ [Node.JS] (https://nodejs.org/en/)
 >Ter um navegador instalado.
 
 ### Iniciar aplicação
