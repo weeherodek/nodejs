@@ -7,7 +7,7 @@ const Usuario = new Schema({
     email:{type: String, required:true},
     usuario: {type: String, required:true},
     senha: {type: String, required:true},
-    admin: {type: Boolean, default:false},
+    admin: {type: Boolean, default:true},
     data_criacao: {type: Date, default:Date.now}
 })
 

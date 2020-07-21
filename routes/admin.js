@@ -24,7 +24,7 @@ router.get('/categoria', authAdmin,(req,res) =>{
     })
 })
 
-router.get('/categoria/add',authAdmin, (req,res) =>{
+router.get('/categoria/add', (req,res) =>{
     res.render("admin/addcategoria")
 })
 
